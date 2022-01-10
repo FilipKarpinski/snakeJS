@@ -1,0 +1,49 @@
+.main-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 100vh;
+    }
+
+.board {
+    height: 600px;
+    min-height: 600px;
+    width: 600px;
+    min-width: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0 0 0;
+    background-color: green;
+}
+
+.left-side-panel {
+    min-width: 100px;
+}
+
+.right-side-panel {
+    min-width: 100px;
+}
+
+%cell {
+    // border: solid;
+    // border-width: 1px;
+    width: 20px;
+    height: 20px;
+}
+
+.cell-empty {
+    @extend %cell;
+    background-color: grey;
+}
+
+.cell-snake {
+    @extend %cell;
+    background-color: green;
+}
+
+.cell-food {
+    @extend %cell;
+    background-color: red;
+}

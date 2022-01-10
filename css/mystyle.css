@@ -1,0 +1,57 @@
+.main-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  height: 100vh;
+}
+
+.board {
+  height: 600px;
+  min-height: 600px;
+  width: 600px;
+  min-width: 600px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0 0 0 0;
+  background-color: green;
+}
+
+.left-side-panel {
+  min-width: 100px;
+}
+
+.right-side-panel {
+  min-width: 100px;
+}
+
+.cell-empty, .cell-snake, .cell-food {
+  width: 20px;
+  height: 20px;
+}
+
+.cell-empty {
+  background-color: grey;
+}
+
+.cell-snake {
+  background-color: green;
+}
+
+.cell-food {
+  background-color: red;
+}
+/*# sourceMappingURL=mystyle.css.map */
