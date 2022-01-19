@@ -1,59 +1,69 @@
 import { Snake } from './snake.js'
 export function Game() {
     this.finished = false
+    this.foodIsOnMap = false
+    this.foodPosition = []
     this.score = 0
     this.snake = new Snake()
+    this.direction = 'ArrowUp'
 
     this.start = async () => {
         document.addEventListener('keydown', (event) => {
             let direction = event.key.toString()
-            switch(direction) {
+            switch (direction) {
                 case 'ArrowUp':
                     if (this.snake.direction != 'ArrowDown') {
-                        this.snake.direction = direction
+                        this.direction = direction
                     }
                     break;
                 case 'ArrowDown':
                     if (this.snake.direction != 'ArrowUp') {
-                        this.snake.direction = direction
+                        this.direction = direction
                     }
                     break;
                 case 'ArrowLeft':
                     if (this.snake.direction != 'ArrowRight') {
-                        this.snake.direction = direction
+                        this.direction = direction
                     }
                     break;
                 case 'ArrowRight':
                     if (this.snake.direction != 'ArrowLeft') {
-                        this.snake.direction = direction
+                        this.direction = direction
                     }
-                    break;  
-              }
+                    break;
+            }
         })
         this.startMoving()
     }
 
     this.startMoving = async () => {
-        while (true) {
-            this.clearMap()
-            this.snake.getSnakePositions().forEach(element => { 
-                if (element[0] > 29 || element[0] < 0 || element[1] > 29 || element[1] < 0) {
-                    this.gameOver()
-                }
-                this.change_cell(element[0], element[1], 'cell-snake')
-            });
-            if (!this.finished) {
-                await new Promise(r => setTimeout(r, 50));
-                this.snake.move(this.snake.direction)
-                console.log('moving')
+        while (!this.finished) {
+            if (this.snake.checkIfEnteredIntoHimself()) {
+                this.gameOver()
+                break
             }
-            
+            else {
+                this.renderMap()
+                this.spawnFood(this.snake.snakePositionsStringified)
+                await new Promise(r => setTimeout(r, 50));
+                this.snake.direction = this.direction
+                if (this.isSnakeEatingFood()) {
+                    let x = this.snake.tail.x
+                    let y = this.snake.tail.y
+                    this.snake.move()
+                    this.snake.addNewTail(x, y)
+                    this.foodIsOnMap = false
+                } else {
+                    this.snake.move()
+                }
+            }
+
         }
     }
 
     this.renderMap = () => {
         this.clearMap()
-        this.snake.getSnakePositions().forEach(element => {
+        this.snake.snakePositions.forEach(element => {
             this.change_cell(element[0], element[1], 'cell-snake')
         });
     }
@@ -75,6 +85,45 @@ export function Game() {
     this.gameOver = () => {
         alert('GAME OVER')
         this.finished = true
+    }
+
+    this.spawnFood = (snakePositionsStringified) => {
+        let foodPosition = this.generateFoodPosition(snakePositionsStringified)
+        if (foodPosition === false) {
+            this.gameOver()
+        } else if (!this.foodIsOnMap) {
+            this.change_cell(foodPosition[0], foodPosition[1], 'cell-food')
+            this.foodPosition = foodPosition
+            this.foodIsOnMap = true
+        }
+    }
+
+    this.generateFoodPosition = (snakePositionsStringified) => {
+        let availablePositions = []
+        for (let i = 0; i < 30; i++) {
+            for (let j = 0; j < 30; j++) {
+                if (!snakePositionsStringified.includes(`${i},${j}`)) {
+                    availablePositions.push([i, j])
+                }
+            }
+        }
+        if (availablePositions.length === 0) {
+            return false
+        }
+        return availablePositions[this.getRandomInt(0, availablePositions.length - 1)]
+    }
+
+    this.getRandomInt = (min, max) => {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    this.isSnakeEatingFood = () => {
+        if (this.snake.snakePositionsStringified.includes(`${this.foodPosition[0]},${this.foodPosition[1]}`)) {
+            return true
+        }
+        return false
     }
 }
 

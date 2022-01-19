@@ -15,7 +15,13 @@ export class Snake {
         this.addNode(15, 22)
         this.addNode(15, 21)
         this.addNode(15, 20)
+        this.addNode(15, 19)
+        this.addNode(15, 18)
+        this.addNode(15, 17)
+        this.addNode(15, 16)
         this.direction = 'ArrowUp'
+        this.snakePositions = this.getSnakePositions()
+        this.snakePositionsStringified = this.getSnakePositionsStringified(this.snakePositions)
     }
 
     addNode (x, y) {
@@ -31,11 +37,16 @@ export class Snake {
             }
             current.previous = node
         }
-
     }
 
-    move (direction) {
-        switch(direction) {
+    addNewTail (x, y) {
+        let node = new SnakeNode(x, y)
+        node.previous = this.tail
+        this.tail = node
+    }
+
+    move () {
+        switch(this.direction) {
             case 'ArrowUp':
                 this.moveSnake(0, -1)
                 break;
@@ -60,6 +71,9 @@ export class Snake {
         }
         current.x += x
         current.y += y
+        this.checkIfCrossedBoundaries(current)
+        this.snakePositions = this.getSnakePositions()
+        this.snakePositionsStringified = this.getSnakePositionsStringified()
     }
 
     getSnakePositions() {
@@ -71,4 +85,35 @@ export class Snake {
         }
         return snakePosition
     }
+
+    getSnakePositionsStringified(){
+        let snakePositionsStringified = []
+        this.snakePositions.forEach(element => {
+            snakePositionsStringified.push(`${element[0]},${element[1]}`)
+        });
+        return snakePositionsStringified
+    }
+
+    checkIfCrossedBoundaries(snakeNode) {
+        if (snakeNode.x < 0) {
+            snakeNode.x = 29
+        }
+        else if (snakeNode.x > 29) {
+            snakeNode.x = 0
+        }
+        if (snakeNode.y < 0) {
+            snakeNode.y = 29
+        }
+        
+        else if (snakeNode.y > 29) {
+            snakeNode.y = 0
+        }
+    }
+
+    checkIfEnteredIntoHimself () {
+        let noDuplicates = new Set(this.snakePositionsStringified)
+        return this.snakePositionsStringified.length !== noDuplicates.size;
+    }
+
+    
 }
