@@ -1,3 +1,9 @@
+body {
+  background: #168f35;
+  background: -webkit-gradient(linear, left top, right top, from(#168f35), to(#c0280e));
+  background: linear-gradient(90deg, #168f35 0%, #c0280e 100%);
+}
+
 .main-container {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -11,10 +17,13 @@
 }
 
 .board {
-  height: 600px;
-  min-height: 600px;
-  width: 600px;
-  min-width: 600px;
+  border: solid;
+  border-width: 10px;
+  border-color: #939493;
+  height: 620px;
+  min-height: 620px;
+  width: 620px;
+  min-width: 620px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -27,7 +36,6 @@
       -ms-flex-align: center;
           align-items: center;
   padding: 0 0 0 0;
-  background-color: green;
 }
 
 .left-side-panel {
@@ -44,14 +52,23 @@
 }
 
 .cell-empty {
-  background-color: grey;
+  border: solid;
+  border-width: 2px;
+  border-color: #939493;
+  background-color: #a0a0a0;
 }
 
 .cell-snake {
-  background-color: green;
+  border: solid;
+  border-width: 4px;
+  border-color: #158231;
+  background-color: #168f35;
 }
 
 .cell-food {
-  background-color: red;
+  border: solid;
+  border-width: 4px;
+  border-color: #9d210b;
+  background-color: #c0280e;
 }
 /*# sourceMappingURL=mystyle.css.map */

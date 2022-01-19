@@ -8,8 +8,7 @@ class SnakeNode {
 }
 
 export class Snake {
-    constructor()
-    {
+    constructor() {
         this.tail = null;
         this.addNode(15, 23)
         this.addNode(15, 22)

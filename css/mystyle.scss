@@ -1,3 +1,8 @@
+body {
+    background: rgb(22,143,53);
+    background: linear-gradient(90deg, rgba(22,143,53,1) 0%, rgba(192,40,14,1) 100%);
+    }
+
 .main-container {
     display: flex;
     align-items: center;
@@ -6,16 +11,18 @@
     }
 
 .board {
-    height: 600px;
-    min-height: 600px;
-    width: 600px;
-    min-width: 600px;
+    border: solid;
+    border-width: 10px;
+    border-color: #939493;
+    height: 620px;
+    min-height: 620px;
+    width: 620px;
+    min-width: 620px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     padding: 0 0 0 0;
-    background-color: green;
 }
 
 .left-side-panel {
@@ -34,16 +41,25 @@
 }
 
 .cell-empty {
+    border: solid;
+    border-width: 2px;
+    border-color: #939493;
     @extend %cell;
-    background-color: grey;
+    background-color: #a0a0a0;
 }
 
 .cell-snake {
+    border: solid;
+    border-width: 4px;
+    border-color: #158231;
     @extend %cell;
-    background-color: green;
+    background-color: #168f35;
 }
 
 .cell-food {
+    border: solid;
+    border-width: 4px;
+    border-color: #9d210b;
     @extend %cell;
-    background-color: red;
+    background-color: #c0280e;
 }

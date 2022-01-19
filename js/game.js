@@ -1,13 +1,16 @@
 import { Snake } from './snake.js'
-export function Game() {
+export class Game {
+    constructor () {
     this.finished = false
     this.foodIsOnMap = false
     this.foodPosition = []
     this.score = 0
     this.snake = new Snake()
     this.direction = 'ArrowUp'
+    }
+    
 
-    this.start = async () => {
+    start() {
         document.addEventListener('keydown', (event) => {
             let direction = event.key.toString()
             switch (direction) {
@@ -36,7 +39,7 @@ export function Game() {
         this.startMoving()
     }
 
-    this.startMoving = async () => {
+    async startMoving () {
         while (!this.finished) {
             if (this.snake.checkIfEnteredIntoHimself()) {
                 this.gameOver()
@@ -61,33 +64,32 @@ export function Game() {
         }
     }
 
-    this.renderMap = () => {
+    renderMap () {
         this.clearMap()
         this.snake.snakePositions.forEach(element => {
             this.change_cell(element[0], element[1], 'cell-snake')
         });
     }
 
-    this.clearMap = () => {
+    clearMap() {
         document.querySelectorAll(".cell-snake").forEach(element => {
             element.classList.remove('cell-snake')
             element.classList.add('cell-empty')
         });
     }
 
-    this.change_cell = (x, y, change_to) => {
+    change_cell(x, y, change_to) {
         let cell_id = `cell-${x}-${y}`
         let cell = document.getElementById(cell_id)
         cell.className = ''
         cell.classList.add(change_to)
     }
 
-    this.gameOver = () => {
-        alert('GAME OVER')
+    gameOver() {
         this.finished = true
     }
 
-    this.spawnFood = (snakePositionsStringified) => {
+    spawnFood(snakePositionsStringified) {
         let foodPosition = this.generateFoodPosition(snakePositionsStringified)
         if (foodPosition === false) {
             this.gameOver()
@@ -98,7 +100,7 @@ export function Game() {
         }
     }
 
-    this.generateFoodPosition = (snakePositionsStringified) => {
+    generateFoodPosition(snakePositionsStringified) {
         let availablePositions = []
         for (let i = 0; i < 30; i++) {
             for (let j = 0; j < 30; j++) {
@@ -113,13 +115,13 @@ export function Game() {
         return availablePositions[this.getRandomInt(0, availablePositions.length - 1)]
     }
 
-    this.getRandomInt = (min, max) => {
+    getRandomInt (min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    this.isSnakeEatingFood = () => {
+    isSnakeEatingFood() {
         if (this.snake.snakePositionsStringified.includes(`${this.foodPosition[0]},${this.foodPosition[1]}`)) {
             return true
         }
