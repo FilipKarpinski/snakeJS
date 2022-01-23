@@ -1,16 +1,56 @@
 import { Snake } from './snake.js'
+
+var GAME_SPEED = 50
 export class Game {
-    constructor () {
-    this.finished = false
-    this.foodIsOnMap = false
-    this.foodPosition = []
-    this.score = 0
-    this.snake = new Snake()
-    this.direction = 'ArrowUp'
+    static game;
+    constructor() {
+        this.finished = true
+        this.highScore = []
     }
-    
+
+    static getGame() {
+        if (!this.game) {
+            this.game = new Game()
+        }
+        return this.game
+    }
 
     start() {
+        this.prepareGame()
+        this.startMoving()
+    }
+
+    async startMoving() {
+        while (!this.finished) {
+            await new Promise(r => setTimeout(r, GAME_SPEED));
+            this.spawnFood(this.snake.snakePositionsStringified)
+            this.renderMap()
+            this.setScore()
+            if (this.snake.checkIfEnteredIntoHimself()) {
+                this.gameOver()
+                break
+            }
+            else {
+                this.snake.direction = this.direction
+                if (this.isSnakeEatingFood()) {
+                    this.snakeEats()
+                } else {
+                    this.snake.move()
+                }
+            }
+
+        }
+    }
+
+    prepareGame () {
+        this.finished = false
+        this.direction = 'ArrowUp'
+        this.score = 0
+        this.foodIsOnMap = false
+        this.foodPosition = []
+        document.getElementById('game-over').style.visibility = 'hidden'
+        document.getElementById('new-high-score').style.visibility = 'hidden'
+        this.snake = new Snake()
         document.addEventListener('keydown', (event) => {
             let direction = event.key.toString()
             switch (direction) {
@@ -36,44 +76,24 @@ export class Game {
                     break;
             }
         })
-        this.startMoving()
     }
 
-    async startMoving () {
-        while (!this.finished) {
-            if (this.snake.checkIfEnteredIntoHimself()) {
-                this.gameOver()
-                break
-            }
-            else {
-                this.renderMap()
-                this.spawnFood(this.snake.snakePositionsStringified)
-                await new Promise(r => setTimeout(r, 50));
-                this.snake.direction = this.direction
-                if (this.isSnakeEatingFood()) {
-                    let x = this.snake.tail.x
-                    let y = this.snake.tail.y
-                    this.snake.move()
-                    this.snake.addNewTail(x, y)
-                    this.foodIsOnMap = false
-                } else {
-                    this.snake.move()
-                }
-            }
-
-        }
-    }
-
-    renderMap () {
+    renderMap() {
         this.clearMap()
         this.snake.snakePositions.forEach(element => {
             this.change_cell(element[0], element[1], 'cell-snake')
         });
+        this.change_cell(this.foodPosition[0], this.foodPosition[1], 'cell-food')
     }
 
     clearMap() {
         document.querySelectorAll(".cell-snake").forEach(element => {
             element.classList.remove('cell-snake')
+            element.classList.remove('cell-food')
+            element.classList.add('cell-empty')
+        });
+        document.querySelectorAll(".cell-food").forEach(element => {
+            element.classList.remove('cell-food')
             element.classList.add('cell-empty')
         });
     }
@@ -86,7 +106,18 @@ export class Game {
     }
 
     gameOver() {
+        this.setHighScore()
         this.finished = true
+        document.getElementById('game-over').style.visibility = 'visible'
+    }
+
+    snakeEats() {
+        let x = this.snake.tail.x
+        let y = this.snake.tail.y
+        this.snake.move()
+        this.snake.addNewTail(x, y)
+        this.foodIsOnMap = false
+        this.score += 1
     }
 
     spawnFood(snakePositionsStringified) {
@@ -94,7 +125,6 @@ export class Game {
         if (foodPosition === false) {
             this.gameOver()
         } else if (!this.foodIsOnMap) {
-            this.change_cell(foodPosition[0], foodPosition[1], 'cell-food')
             this.foodPosition = foodPosition
             this.foodIsOnMap = true
         }
@@ -115,18 +145,46 @@ export class Game {
         return availablePositions[this.getRandomInt(0, availablePositions.length - 1)]
     }
 
-    getRandomInt (min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
     isSnakeEatingFood() {
         if (this.snake.snakePositionsStringified.includes(`${this.foodPosition[0]},${this.foodPosition[1]}`)) {
             return true
         }
         return false
     }
+
+    setScore() {
+        document.getElementById('score').innerHTML = this.score
+        document.getElementById('final-score').innerHTML = this.score
+    }
+
+    setHighScore() {
+        if (this.highScore.length == 0) {
+            document.getElementById('new-high-score').style.visibility = 'visible'
+        }
+        if (this.highScore.length > 0 && this.score > this.highScore[0]) {
+            document.getElementById('new-high-score').style.visibility = 'visible'
+        }
+        this.highScore.push(this.score)
+        this.highScore = this.highScore.sort(function(a, b) {
+            return a - b;
+          }).reverse()
+        if (this.highScore.length > 0) {
+            document.getElementById('high-score-1').innerHTML = this.highScore[0]
+            document.getElementById('high-score-container-1').style.visibility = 'visible'
+        }
+        if (this.highScore.length > 1) {
+            document.getElementById('high-score-2').innerHTML = this.highScore[1]
+            document.getElementById('high-score-container-2').style.visibility = 'visible'
+        }
+        if (this.highScore.length > 2) {
+            document.getElementById('high-score-3').innerHTML = this.highScore[2]
+            document.getElementById('high-score-container-3').style.visibility = 'visible'
+        }
+    }
+
+    getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 }
-
-

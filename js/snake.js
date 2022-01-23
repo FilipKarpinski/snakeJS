@@ -113,6 +113,4 @@ export class Snake {
         let noDuplicates = new Set(this.snakePositionsStringified)
         return this.snakePositionsStringified.length !== noDuplicates.size;
     }
-
-    
 }

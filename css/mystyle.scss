@@ -1,41 +1,119 @@
+$primary-grey: #939493;
+$secondary-grey: #a0a0a0;
+$primary-red: #9d210b;
+$secondary-red: #c0280e;
+$primary-green: #158231;
+$secondary-green: #168f35;
+$primary-black: #080808dc;
+$primary-white: #e0d5d3;
+
 body {
-    background: rgb(22,143,53);
-    background: linear-gradient(90deg, rgba(22,143,53,1) 0%, rgba(192,40,14,1) 100%);
+    background: linear-gradient(90deg, $primary-red 0%, $primary-green 100%);
+    font-family: 'Mochiy Pop P One', sans-serif;
+    color: $primary-black;
     }
+
+hr {
+    opacity: 1;
+    border: solid 2px;
+    height: 100px;
+}
+
+h2 {
+    font-size: 30px;
+}
 
 .main-container {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
     height: 100vh;
+    flex-wrap: wrap;
     }
 
 .board {
-    border: solid;
-    border-width: 10px;
-    border-color: #939493;
-    height: 620px;
-    min-height: 620px;
-    width: 620px;
-    min-width: 620px;
+    background-color: $primary-black;
+    border-radius: 10px;
+    padding: 15px;
+    height: 630px;
+    min-height: 630px;
+    width: 630px;
+    min-width: 630px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    padding: 0 0 0 0;
 }
 
 .left-side-panel {
-    min-width: 100px;
+    height: 630px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    #snake-img {
+        height: 200px;
+        width: 200px;
+    }
+
+    #button-start {
+        border-radius: 10px;
+        border: solid $primary-black 4px !important;
+        display: inline-block;
+        height: 50px;
+        width: 200px;
+        color: $primary-black;
+        background-color: $secondary-grey;
+        border: 0;
+        font-size: 20px;
+    }
 }
 
 .right-side-panel {
-    min-width: 100px;
+    height: 630px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    #container-score {
+        border-radius: 10px;
+        background-color: $secondary-grey;
+        border-radius: 10px;
+        border: solid $primary-black 4px;
+        width: 200px;
+        height: 130px;
+        h2 {
+            display: flex;
+            justify-content: center;        
+        }
+    }
+
+    #container-high-score {
+        border-radius: 10px;
+        border: solid $primary-black 4px;
+        background-color: $secondary-grey;
+        width: 200px;
+        height: 280px;
+        h2 {
+            display: flex;
+            justify-content: center;        
+        }
+
+        #high-score-container-1 {
+            visibility: hidden;
+        }
+        #high-score-container-2 {
+            visibility: hidden;
+        }
+        #high-score-container-3 {
+            visibility: hidden;
+        }
+    }
 }
 
 %cell {
-    // border: solid;
-    // border-width: 1px;
     width: 20px;
     height: 20px;
 }
@@ -43,23 +121,55 @@ body {
 .cell-empty {
     border: solid;
     border-width: 2px;
-    border-color: #939493;
+    border-color: $primary-grey;
     @extend %cell;
-    background-color: #a0a0a0;
+    background-color: $secondary-grey;
 }
 
 .cell-snake {
     border: solid;
     border-width: 4px;
-    border-color: #158231;
+    border-color: $primary-green;
     @extend %cell;
-    background-color: #168f35;
+    background-color: $secondary-green;
 }
 
 .cell-food {
     border: solid;
     border-width: 4px;
-    border-color: #9d210b;
+    border-color: $primary-red;
     @extend %cell;
-    background-color: #c0280e;
+    background-color: $secondary-red;
+}
+
+#game-over {
+    visibility: hidden;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    color: $primary-black;
+
+    #game-over-block {
+        position: relative;
+        top: 150px;
+        background-color: $primary-grey;
+        opacity: 0.7;
+        height: 600px;
+        width: 600px;
+    }
+
+    #game-over-text {
+        height: 300px;
+        position: relative;
+        top: -300px;
+        h1 {
+            display: flex;
+            justify-content: center;
+        }
+    
+        #new-high-score {
+            visibility: hidden;
+        }
+    }
+    
 }
