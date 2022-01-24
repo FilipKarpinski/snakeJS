@@ -21,8 +21,9 @@ export class Game {
     }
 
     async startMoving() {
+        var startTime, endTime, timeDiff;
         while (!this.finished) {
-            await new Promise(r => setTimeout(r, GAME_SPEED));
+            startTime = new Date()
             this.spawnFood(this.snake.snakePositionsStringified)
             this.renderMap()
             this.setScore()
@@ -38,7 +39,9 @@ export class Game {
                     this.snake.move()
                 }
             }
-
+            endTime = new Date()
+            timeDiff = endTime - startTime
+            await new Promise(r => setTimeout(r, GAME_SPEED - timeDiff));
         }
     }
 
