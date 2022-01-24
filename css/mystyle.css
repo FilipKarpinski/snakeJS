@@ -82,6 +82,16 @@ h2 {
   font-size: 20px;
 }
 
+.left-side-panel #button-start:hover {
+  -webkit-transform: scale(1.005);
+          transform: scale(1.005);
+}
+
+.left-side-panel #button-start:active {
+  -webkit-transform: scale(1.2);
+          transform: scale(1.2);
+}
+
 .right-side-panel {
   height: 630px;
   width: 200px;

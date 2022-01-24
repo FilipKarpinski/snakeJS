@@ -68,6 +68,12 @@ h2 {
         border: 0;
         font-size: 20px;
     }
+    #button-start:hover {
+        transform: scale(1.005);
+    }
+    #button-start:active {
+        transform: scale(1.2);
+    }
 }
 
 .right-side-panel {
